@@ -38,6 +38,35 @@ export const constantRouterMap = [
   },
 
   {
+    path: '/teacher',
+    component: Layout,
+    redirect: '/teacher/table',
+    name: '教师管理',
+    meta: { title: '教师管理', icon: 'example' },
+    children: [
+      {
+        path: 'table',
+        name: '教师列表',
+        component: () => import('@/views/edu/teacher/teacherlist'),
+        meta: { title: '教师列表', icon: 'table' }
+      },
+      {
+        path: 'save',
+        name: '添加教师',
+        component: () => import('@/views/edu/teacher/teachersave'),
+        meta: { title: '添加教师', icon: 'tree' }
+      },
+      {
+        path: 'edit/:id',   
+        name: 'EduTeacherEdit',
+        component: () => import('@/views/edu/teacher/teachersave'),
+        meta: { title: '编辑教师', noCache: true },
+        hidden: true
+      }
+    ]
+  },
+
+  {
     path: '/example',
     component: Layout,
     redirect: '/example/table',
