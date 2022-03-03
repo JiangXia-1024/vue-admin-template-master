@@ -11,7 +11,7 @@ export default {
     //2 查询所有教师
     getListTeacher() {
         return request({
-            url: '/eduservice/teacher/findAll',
+            url: '/eduservice/teacher/findall',
             method: 'get'
           })
     }
