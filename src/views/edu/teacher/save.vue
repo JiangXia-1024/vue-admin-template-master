@@ -6,7 +6,7 @@
         <el-input v-model="teacher.name"/>
       </el-form-item>
       <el-form-item label="讲师排序">
-        <el-input-number v-model="teacher.sort" controls-position="right" min="0"/>
+        <el-input-number v-model="teacher.sort" controls-position="right" :min="0"/>
       </el-form-item>
       <el-form-item label="讲师头衔">
         <el-select v-model="teacher.level" clearable placeholder="请选择">
@@ -21,11 +21,12 @@
         <el-input v-model="teacher.intro" :rows="10" type="textarea"/>
       </el-form-item>
 
-      <!-- 讲师头像模块-->
-       <el-form-item label="讲师头像">
+      <!-- 讲师头像：TODO -->
+      <!-- 讲师头像 -->
+      <el-form-item label="讲师头像">
 
           <!-- 头衔缩略图 -->
-          <pan-thumb :image="teacher.avatar"/>
+          <pan-thumb :image="String(teacher.avatar)"/>
           <!-- 文件上传按钮 -->
           <el-button type="primary" icon="el-icon-upload" @click="imagecropperShow=true">更换头像
           </el-button>
@@ -60,6 +61,7 @@
 import teacherApi from '@/api/edu/teacher'
 import ImageCropper from '@/components/ImageCropper'
 import PanThumb from '@/components/PanThumb'
+
 export default {
   components: { ImageCropper, PanThumb },
   data() {
@@ -72,12 +74,12 @@ export default {
         intro: '',
         avatar: ''
       },
-      saveBtnDisabled:false,  // 保存按钮是否禁用,
+
       //上传弹框组件是否显示
       imagecropperShow:false,
-      //上传组件key值
-      imagecropperKey:0,
+      imagecropperKey:0,//上传组件key值
       BASE_API:process.env.BASE_API, //获取dev.env.js里面地址
+      saveBtnDisabled:false  // 保存按钮是否禁用,
     }
   },
   created() { //页面渲染之前执行
@@ -89,6 +91,18 @@ export default {
     }
   },
   methods:{
+    close() { //关闭上传弹框的方法
+        this.imagecropperShow=false
+        //上传组件初始化
+        this.imagecropperKey = this.imagecropperKey+1
+    },
+    //上传成功方法
+    cropSuccess(data) {
+      this.imagecropperShow=false
+      //上传之后接口返回图片地址
+      this.teacher.avatar = data.url
+      this.imagecropperKey = this.imagecropperKey+1
+    },
     init() {
       //判断路径有id值,做修改
       if(this.$route.params && this.$route.params.id) {
@@ -144,23 +158,8 @@ export default {
           //回到列表页面 路由跳转
           this.$router.push({path:'/teacher/table'})
         })
-    },
-    //关闭上传弹窗方法
-    close(){
-      this.imagecropperShow = false
-      //上传组件初始化
-      this.imagecropperKey = this.imagecropperKey+1
-    },
-    // 上传成功方法
-    cropSuccess(data){
-      console.log("====上传成功后返回数据====")
-      console.log(data)
-      //上传成功后关闭弹窗
-      this.imagecropperShow = false
-      this.teacher.avatar = data.url//上传成功返回图片地址
-      this.imagecropperKey = this.imagecropperKey+1
+    }
 
-    },
   }
 }
 </script>

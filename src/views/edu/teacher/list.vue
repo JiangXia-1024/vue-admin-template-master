@@ -1,13 +1,15 @@
 <template>
-    <div>
+  <div class="app-container">
+    讲师列表
+
     <!--查询表单-->
     <el-form :inline="true" class="demo-form-inline">
       <el-form-item>
-        <el-input v-model="teacherQuery.name" placeholder="教师姓名"/>
+        <el-input v-model="teacherQuery.name" placeholder="讲师名"/>
       </el-form-item>
 
       <el-form-item>
-        <el-select v-model="teacherQuery.level" clearable placeholder="教师头衔">
+        <el-select v-model="teacherQuery.level" clearable placeholder="讲师头衔">
           <el-option :value="1" label="高级讲师"/>
           <el-option :value="2" label="首席讲师"/>
         </el-select>
@@ -36,8 +38,8 @@
       <el-button type="default" @click="resetData()">清空</el-button>
     </el-form>
 
-       教师列表
-      <el-table
+    <!-- 表格 -->
+    <el-table
       :data="list"
       border
       fit
@@ -76,7 +78,7 @@
       </el-table-column>
     </el-table>
 
-      <!-- 分页 -->
+  <!-- 分页 -->
     <el-pagination
       :current-page="page"
       :page-size="limit"
@@ -85,52 +87,51 @@
       layout="total, prev, pager, next, jumper"
       @current-change="getList"
     />
-    </div>    
+
+  </div>
 </template>
 <script>
-//引入调用的js文件
+//引入调用teacher.js文件
 import teacher from '@/api/edu/teacher'
-  //核心代码部分
-export default{
-    // 定义变量和初始数据
-    data(){
-        return{
-            list:null,//查询之后接口返回的数据的集合
-            page:1,//当前页
-            limit:10,//每页记录数
-            total:0,//总记录数
-            teacherQuery:{//条件封装的对象
 
-            }
+export default {
+    //写核心代码位置
+    // data:{
+    // },
+    data() { //定义变量和初始值
+        return {
+          list:null,//查询之后接口返回集合
+          page:1,//当前页
+          limit:10,//每页记录数
+          total:0,//总记录数
+          teacherQuery:{} //条件封装对象
         }
     },
-    //页面渲染之前执行，一般是用来调用methods定义的方法
-    created(){
-        this.getList()
+    created() { //页面渲染之前执行，一般调用methods定义的方法
+        //调用
+        this.getList() 
     },
-    // 创建具体的方法，用来调用api下js中定义的方法
-    methods:{
-        // 讲师列表的查询方法
-        getList(page=1){//如果不传page，则默认值是1，传了就用传的值
+    methods:{  //创建具体的方法，调用teacher.js定义的方法
+        //讲师列表的方法
+        getList(page=1) {
             this.page = page
             teacher.getTeacherListPage(this.page,this.limit,this.teacherQuery)
-            .then(Response=>{
-                //对response接口返回的数据进行处理
-                console.log(Response)
-                this.list = Response.data.records;
-                this.total = Response.data.total;
-            })//请求成功
-            .catch(error=>{
-                console.log(error)
-            })//请求失败
+                .then(response =>{//请求成功
+                    //response接口返回的数据
+                    //console.log(response)
+                    this.list = response.data.rows
+                    this.total = response.data.total
+                    console.log(this.list)   
+                    console.log(this.total)
+                }) 
         },
-        resetData() {//清空查询条件
+        resetData() {//清空的方法
             //表单输入项数据清空
             this.teacherQuery = {}
             //查询所有讲师数据
             this.getList()
         },
-         //删除教师的方法
+        //删除讲师的方法
         removeDataById(id) {
             this.$confirm('此操作将永久删除讲师记录, 是否继续?', '提示', {
                 confirmButtonText: '确定',
@@ -150,6 +151,7 @@ export default{
                 })
             }) //点击取消，执行catch方法
         }
+ 
     }
 }
 </script>

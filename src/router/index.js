@@ -41,26 +41,26 @@ export const constantRouterMap = [
     path: '/teacher',
     component: Layout,
     redirect: '/teacher/table',
-    name: '教师管理',
-    meta: { title: '教师管理', icon: 'example' },
+    name: '讲师管理',
+    meta: { title: '讲师管理', icon: 'example' },
     children: [
       {
         path: 'table',
-        name: '教师列表',
-        component: () => import('@/views/edu/teacher/teacherlist'),
-        meta: { title: '教师列表', icon: 'table' }
+        name: '讲师列表',
+        component: () => import('@/views/edu/teacher/list'),
+        meta: { title: '讲师列表', icon: 'table' }
       },
       {
         path: 'save',
-        name: '添加教师',
-        component: () => import('@/views/edu/teacher/teachersave'),
-        meta: { title: '添加教师', icon: 'tree' }
+        name: '添加讲师',  
+        component: () => import('@/views/edu/teacher/save'),
+        meta: { title: '添加讲师', icon: 'tree' }
       },
       {
         path: 'edit/:id',   
         name: 'EduTeacherEdit',
-        component: () => import('@/views/edu/teacher/teachersave'),
-        meta: { title: '编辑教师', noCache: true },
+        component: () => import('@/views/edu/teacher/save'),
+        meta: { title: '编辑讲师', noCache: true },
         hidden: true
       }
     ]
@@ -69,24 +69,25 @@ export const constantRouterMap = [
   {
     path: '/subject',
     component: Layout,
-    redirect: '/subject/subjectlist',
+    redirect: '/subject/list',
     name: '课程分类管理',
     meta: { title: '课程分类管理', icon: 'example' },
     children: [
       {
-        path: 'subjectlist',
+        path: 'list',
         name: '课程分类列表',
-        component: () => import('@/views/edu/subject/subjectlist'),
+        component: () => import('@/views/edu/subject/list'),
         meta: { title: '课程分类列表', icon: 'table' }
       },
       {
-        path: 'subjectsave',
+        path: 'save',
         name: '添加课程分类',  
-        component: () => import('@/views/edu/subject/subjectsave'),
+        component: () => import('@/views/edu/subject/save'),
         meta: { title: '添加课程分类', icon: 'tree' }
       }
     ]
   },
+
   {
     path: '/course',
     component: Layout,
@@ -129,6 +130,7 @@ export const constantRouterMap = [
       }
     ]
   },
+
 
   {
     path: '/example',
